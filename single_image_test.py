@@ -286,10 +286,10 @@ if __name__ == "__main__":
     parser.add_argument('--save_path', type=str, help='the path to save the results')
 
     args = parser.parse_args()
-    config_path = os.path.join(args.path, 'config.yml')
+    config_path = args.config_file #os.path.join(args.path, 'config.yml')
 
     # create checkpoints path if does't exist
-    os.makedirs(args.path, exist_ok=True)
+    #os.makedirs(args.path, exist_ok=True)
 
     # copy config template if does't exist
     if not os.path.exists(config_path):
@@ -330,3 +330,6 @@ if __name__ == "__main__":
     wf.eval()
 
     test(model, wf, args.img_path, args.mask_path, args.save_path, 0.85, sigma256=3.0)
+
+# python single_image_test.py --path InpaintingModel_best_gen.pth --config_file ./config_list/config_ZITS_HR_places2.yml \
+#  --GPU_ids '0' --img_path ./test_imgs/img1.png --mask_path ./test_imgs/mask1.png --save_path ./imgs
