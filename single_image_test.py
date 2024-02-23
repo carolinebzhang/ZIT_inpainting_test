@@ -287,7 +287,7 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
     config_path = args.config_file #os.path.join(args.path, 'config.yml')
-
+    device = "cuda" if torch.cuda.is_available() else  "cpu"
     # create checkpoints path if does't exist
     #os.makedirs(args.path, exist_ok=True)
 
@@ -299,8 +299,8 @@ if __name__ == "__main__":
 
     os.environ['CUDA_VISIBLE_DEVICES'] = args.GPU_ids
     args.world_size = 1
-
-    torch.cuda.set_device(0)
+    if device == "cuda":
+        torch.cuda.set_device(0)
 
     # load config file
     config = Config(args.config_path)
@@ -314,7 +314,9 @@ if __name__ == "__main__":
 
     # initialize random seed
     torch.manual_seed(config.SEED)
-    torch.cuda.manual_seed_all(config.SEED)
+
+    if device == "cuda": 
+        torch.cuda.manual_seed_all(config.SEED)
     np.random.seed(config.SEED)
     random.seed(config.SEED)
 
